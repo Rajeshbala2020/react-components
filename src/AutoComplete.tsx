@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState, useCallback, useRef } from 'react';
+import React, { FC, useEffect, useState, useCallback, useRef } from "react";
 
-import { useSuggestions } from './utilities/autosuggestions';
-import { Close, DropArrow, Spinner } from './utilities/icons';
-import { debounce } from './utilities/debounce';
-import { filterSuggestions } from './utilities/filterSuggestions';
+import { useSuggestions } from "./utilities/autosuggestions";
+import { Close, DropArrow, Spinner } from "./utilities/icons";
+import { debounce } from "./utilities/debounce";
+import { filterSuggestions } from "./utilities/filterSuggestions";
 type ValueProps = {
   id: string;
   name: string;
@@ -18,10 +18,10 @@ interface AutoSuggestionInputProps {
   onChange: (value?: ValueProps) => void;
   data?: ValueProps[];
   type?:
-    | 'custom_select'
-    | 'auto_complete'
-    | 'custom_search_select'
-    | 'auto_suggestion';
+    | "custom_select"
+    | "auto_complete"
+    | "custom_search_select"
+    | "auto_suggestion";
   placeholder?: string;
   getData?: (key?: string) => any;
   errors?: any;
@@ -42,7 +42,7 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
   fullWidth = false,
   placeholder,
   id,
-  type = 'custom_select',
+  type = "custom_select",
   readOnly = false,
   disabled = false,
   value,
@@ -51,8 +51,8 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   // State Hooks Section
 
-  const [inputValue, setInputValue] = useState<string>(value?.name ?? '');
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>(value?.name ?? "");
+  const [searchValue, setSearchValue] = useState<string>("");
   const [dropOpen, setDropOpen] = useState<boolean>(false);
   const [selectedItems, setSelectedItems] = useState<ValueProps[]>([]);
 
@@ -71,14 +71,14 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
     } else {
       setInputValue(suggestion.name);
     }
-    setSearchValue('');
+    setSearchValue("");
     onChange(suggestion);
     setDropOpen(false);
   }, []);
 
   // Adding debounce to avoid making API calls on every keystroke
   const handleChangeWithDebounce = debounce((value) => {
-    if (type === 'auto_complete' || type === 'auto_suggestion') {
+    if (type === "auto_complete" || type === "auto_suggestion") {
       handlePickSuggestions(value);
     }
   }, 300);
@@ -96,7 +96,7 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
 
   // Effect to set the input value whenever `value` prop changes
   useEffect(() => {
-    setInputValue(value?.name ?? '');
+    setInputValue(value?.name ?? "");
   }, [value?.name]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,14 +113,14 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
   };
 
   const handleClear = () => {
-    setInputValue('');
-    onChange({ id: '', name: '' });
+    setInputValue("");
+    onChange({ id: "", name: "" });
     setDropOpen(false);
   };
 
   const generateClassName = useCallback(() => {
     return `qbs-textfield-default ${
-      errors && errors[name] ? 'textfield-error' : 'textfield'
+      errors && errors[name] ? "textfield-error" : "textfield"
     }`;
   }, [errors, name]);
   const handleRemoveSelectedItem = (index: number) => {
@@ -139,9 +139,9 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
         setDropOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside as any);
+    document.addEventListener("mousedown", handleClickOutside as any);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside as any);
+      document.removeEventListener("mousedown", handleClickOutside as any);
     };
   }, []);
 
@@ -153,7 +153,7 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
   );
 
   return (
-    <div className={fullWidth ? 'fullWidth' : 'autoWidth'} ref={dropdownRef}>
+    <div className={fullWidth ? "fullWidth" : "autoWidth"} ref={dropdownRef}>
       {label && (
         <div style={{ marginBottom: 5 }}>
           <label className={`labels label-text`}>
@@ -176,19 +176,19 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
           </div>
         ))}
       </div>
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: "relative" }}>
         <input
           id={id}
           type="text"
           value={
-            type === 'auto_suggestion' ? inputValue : searchValue || inputValue
+            type === "auto_suggestion" ? inputValue : searchValue || inputValue
           }
           onChange={handleChange}
           onBlur={handleBlur}
           className={generateClassName()}
-          placeholder={placeholder ?? ''}
+          placeholder={placeholder ?? ""}
           readOnly={
-            readOnly || type === 'custom_select' || type == 'auto_suggestion'
+            readOnly || type === "custom_select" || type == "auto_suggestion"
               ? true
               : false
           }
@@ -220,7 +220,7 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
 
         {/* Displaying Loading Spinner */}
         {isLoading && (
-          <span style={{ position: 'absolute', top: 5, right: 2 }}>
+          <span style={{ position: "absolute", top: 5, right: 2 }}>
             <Spinner />
           </span>
         )}
@@ -228,8 +228,8 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
         {/* Suggestions Dropdown */}
         {dropOpen && (
           <ul className="qbs-autocomplete-suggestions">
-            {type == 'auto_suggestion' && (
-              <div style={{ position: 'relative' }}>
+            {type == "auto_suggestion" && (
+              <div style={{ position: "relative" }}>
                 <input
                   className="dropdown-search-input"
                   onChange={handleChange}
@@ -267,7 +267,7 @@ const AutoComplete: FC<AutoSuggestionInputProps> = ({
                 ))
               ) : (
                 <li className="qbs-autocomplete-notfound" onClick={handleBlur}>
-                  No Results Found
+                  No Result Found
                 </li>
               )}
             </div>
